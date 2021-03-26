@@ -1,0 +1,61 @@
+diff --git a/Makefile b/Makefile
+index 470ac86..a836907 100644
+--- a/Makefile
++++ b/Makefile
+@@ -43,7 +43,9 @@ dist: clean
+ install: st
+ 	mkdir -p $(DESTDIR)$(PREFIX)/bin
+ 	cp -f st $(DESTDIR)$(PREFIX)/bin
++	cp -f st-copyout $(DESTDIR)$(PREFIX)/bin
+ 	chmod 755 $(DESTDIR)$(PREFIX)/bin/st
++	chmod 755 $(DESTDIR)$(PREFIX)/bin/st-copyout
+ 	mkdir -p $(DESTDIR)$(MANPREFIX)/man1
+ 	sed "s/VERSION/$(VERSION)/g" < st.1 > $(DESTDIR)$(MANPREFIX)/man1/st.1
+ 	chmod 644 $(DESTDIR)$(MANPREFIX)/man1/st.1
+@@ -52,6 +54,7 @@ install: st
+ 
+ uninstall:
+ 	rm -f $(DESTDIR)$(PREFIX)/bin/st
++	rm -f $(DESTDIR)$(PREFIX)/bin/st-copyout
+ 	rm -f $(DESTDIR)$(MANPREFIX)/man1/st.1
+ 
+ .PHONY: all options clean dist install uninstall
+diff --git a/config.def.h b/config.def.h
+index 6f05dce..d57e5a7 100644
+--- a/config.def.h
++++ b/config.def.h
+@@ -185,6 +185,8 @@ static MouseShortcut mshortcuts[] = {
+ #define MODKEY Mod1Mask
+ #define TERMMOD (ControlMask|ShiftMask)
+ 
++static char *copyoutput[] = { "/bin/sh", "-c", "st-copyout", "externalpipe", NULL };
++
+ static Shortcut shortcuts[] = {
+ 	/* mask                 keysym          function        argument */
+ 	{ XK_ANY_MOD,           XK_Break,       sendbreak,      {.i =  0} },
+@@ -199,6 +201,7 @@ static Shortcut shortcuts[] = {
+ 	{ TERMMOD,              XK_Y,           selpaste,       {.i =  0} },
+ 	{ ShiftMask,            XK_Insert,      selpaste,       {.i =  0} },
+ 	{ TERMMOD,              XK_Num_Lock,    numlock,        {.i =  0} },
++    { MODKEY,               XK_o,           externalpipe,   {.v = copyoutput } },
+ };
+ 
+ /*
+diff --git a/st-copyout b/st-copyout
+new file mode 100644
+index 0000000..8eafc58
+--- /dev/null
++++ b/st-copyout
+@@ -0,0 +1,12 @@
++#!/bin/sh
++# Using external pipe with st, give a dmenu prompt of recent commands,
++# allowing the user to copy the output of one.
++# xclip required for this script.
++# By Jaywalker and Luke
++tmpfile=$(mktemp /tmp/st-cmd-output.XXXXXX)
++trap 'rm "$tmpfile"' 0 1 15
++sed -n "w $tmpfile"
++ps1="$(grep "\S" "$tmpfile" | tail -n 1 | sed 's/^\s*//' | cut -d' ' -f1)"
++chosen="$(grep -F "$ps1" "$tmpfile" | sed '$ d' | tac | dmenu -p "Copy which command's output?" -i -l 10 | sed 's/[^^]/[&]/g; s/\^/\\^/g')"
++eps1="$(echo "$ps1" | sed 's/[^^]/[&]/g; s/\^/\\^/g')"
++awk "/^$chosen$/{p=1;print;next} p&&/$eps1/{p=0};p" "$tmpfile" | xclip -selection clipboard
