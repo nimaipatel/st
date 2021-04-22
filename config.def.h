@@ -9,6 +9,7 @@ static char *font = "monospace:pixelsize=16:antialias=true:autohint=true";
 /* Spare fonts */
 static char *font2[] = {
 	"JoyPixels:pixelsize=16:antialias=true:autohint=true",
+	"Symbols Nerd Font:pixelsize=16:antialias=true:autohint=true",
 };
 
 static int borderpx = 2;
