@@ -25,5 +25,6 @@ $ sudo make clean install && make clean
 - [`harfbuzz`](https://archlinux.org/packages/extra/x86_64/harfbuzz/) library for rendering ligatures
 
 ## Optional Dependencies
+- dmenu to copy and follow URLs and to copy command output
 - Joypixels and Nerd Fonts packages to render color emojis and powerline fonts
 - A compositor for transparency and blur effects
