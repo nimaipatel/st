@@ -2185,8 +2185,8 @@ xrdb_load(void)
 
 		XRESOURCE_LOAD_STRING("foreground", colorname[defaultfg]);
 		XRESOURCE_LOAD_STRING("background", colorname[defaultbg]);
-		XRESOURCE_LOAD_STRING("bg", colorname[bg]);
-		XRESOURCE_LOAD_STRING("bgUnfocused", colorname[bgUnfocused]);
+		XRESOURCE_LOAD_STRING("background", colorname[bg]);
+		XRESOURCE_LOAD_STRING("background", colorname[bgUnfocused]);
 		XRESOURCE_LOAD_STRING("cursorfg", colorname[defaultcs])
 		else {
 		  // this looks confusing because we are chaining off of the if
