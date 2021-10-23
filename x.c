@@ -1027,8 +1027,8 @@ xloadfonts(const char *fontstr, double fontsize)
 	win.ch = ceilf(dc.font.height * chscale);
 
 	FcPatternDel(pattern, FC_SLANT);
-	/* uncomment next line to enable italics */
-	/* FcPatternAddInteger(pattern, FC_SLANT, FC_SLANT_ITALIC); */
+	/* comment next line to disable italics */
+	FcPatternAddInteger(pattern, FC_SLANT, FC_SLANT_ITALIC);
 	if (xloadfont(&dc.ifont, pattern))
 		die("can't open font %s\n", fontstr);
 

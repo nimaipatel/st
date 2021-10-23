@@ -5,15 +5,14 @@
  *
  * font: see http://freedesktop.org/software/fontconfig/fontconfig-user.html
  */
-static char *font = "monospace:pixelsize=14:antialias=true:autohint=true";
+static char *font = "Nimaiosevka Sans:pixelsize=16:antialias=true:autohint=true";
 /* Spare fonts */
 static char *font2[] = {
 	"JoyPixels:pixelsize=14:antialias=true:autohint=true",
 	"Symbols Nerd Font:pixelsize=14:antialias=true:autohint=true",
 };
 
-static int borderpx = 2;
-
+static int borderpx = 0;
 static int ligatures = 1;
 
 /*
@@ -102,7 +101,7 @@ char *termname = "st-256color";
 unsigned int tabspaces = 8;
 
 /* bg opacity */
-float alpha = 1.0, alphaUnfocused = 1.0;
+float alpha = 0.8, alphaUnfocused = 0.7;
 
 /* Terminal colors (16 first used in escape sequence) */
 static const char *colorname[] = {
@@ -219,7 +218,7 @@ static Shortcut shortcuts[] = {
 	{ XK_ANY_MOD,           XK_Print,       printsel,       {.i =  0} },
 	{ ControlMask,          XK_equal,       zoom,           {.f = +1} },
 	{ ControlMask,          XK_minus,       zoom,           {.f = -1} },
-	{ ControlMask,          XK_BackSpace,   zoomreset,      {.f =  0} },
+	{ ControlMask,          XK_0,   zoomreset,      {.f =  0} },
 	{ TERMMOD,              XK_C,           clipcopy,       {.i =  0} },
 	{ TERMMOD,              XK_V,           clippaste,      {.i =  0} },
 	{ TERMMOD,              XK_Y,           selpaste,       {.i =  0} },
