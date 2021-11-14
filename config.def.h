@@ -5,7 +5,7 @@
  *
  * font: see http://freedesktop.org/software/fontconfig/fontconfig-user.html
  */
-static char *font = "Nimaiosevka Sans:pixelsize=16:antialias=true:autohint=true";
+static char *font = "monospace:pixelsize=16:antialias=true:autohint=true";
 /* Spare fonts */
 static char *font2[] = {
 	"JoyPixels:pixelsize=14:antialias=true:autohint=true",
@@ -218,7 +218,7 @@ static Shortcut shortcuts[] = {
 	{ XK_ANY_MOD,           XK_Print,       printsel,       {.i =  0} },
 	{ ControlMask,          XK_equal,       zoom,           {.f = +1} },
 	{ ControlMask,          XK_minus,       zoom,           {.f = -1} },
-	{ ControlMask,          XK_0,   zoomreset,      {.f =  0} },
+	{ ControlMask,          XK_0,           zoomreset,      {.f =  0} },
 	{ TERMMOD,              XK_C,           clipcopy,       {.i =  0} },
 	{ TERMMOD,              XK_V,           clippaste,      {.i =  0} },
 	{ TERMMOD,              XK_Y,           selpaste,       {.i =  0} },

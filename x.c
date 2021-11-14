@@ -2257,8 +2257,11 @@ reload(int sig)
 
 	/* colors, fonts */
 	xloadcols();
+	usedfont = (opt_font == NULL)? font : opt_font;
 	xunloadfonts();
-	xloadfonts(font, 0);
+	xloadfonts(usedfont, usedfontsize);
+	xloadsparefonts();
+
 
 	/* pretend the window just got resized */
 	cresize(win.w, win.h);
