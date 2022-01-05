@@ -568,15 +568,15 @@ selnormalize(void)
 	selsnap(&sel.nb.x, &sel.nb.y, -1);
 	selsnap(&sel.ne.x, &sel.ne.y, +1);
 
-  /* expand selection over line breaks */
+	/* expand selection over line breaks */
 	if (sel.type == SEL_RECTANGULAR)
 		return;
 
-  i = tlinelen(TLINE(sel.nb.y));
+	i = tlinelen(TLINE(sel.nb.y));
 	if (sel.nb.x > i)
 		sel.nb.x = i;
-  if (sel.ne.x >= tlinelen(TLINE(sel.ne.y)))
-    sel.ne.x = term.col - 1;
+	if (sel.ne.x >= tlinelen(TLINE(sel.ne.y)))
+		sel.ne.x = term.col - 1;
 }
 
 int
@@ -855,7 +855,7 @@ ttynew(const char *line, char *cmd, const char *out, char **args)
 	if (out) {
 		term.mode |= MODE_PRINT;
 		iofd = (!strcmp(out, "-")) ?
-			  1 : open(out, O_WRONLY | O_CREAT, 0666);
+				1 : open(out, O_WRONLY | O_CREAT, 0666);
 		if (iofd < 0) {
 			fprintf(stderr, "Error opening %s:%s\n",
 				out, strerror(errno));
@@ -1109,7 +1109,7 @@ tsetdirtattr(int attr)
 void
 tfulldirt(void)
 {
-  for (int i = 0; i < term.row; i++)
+	for (int i = 0; i < term.row; i++)
 		term.dirty[i] = 1;
 }
 
@@ -1153,15 +1153,15 @@ treset(void)
 	memset(term.trantbl, CS_USA, sizeof(term.trantbl));
 	term.charset = 0;
 
-  selremove();
+	selremove();
 	for (i = 0; i < 2; i++) {
-  	tcursor(CURSOR_SAVE); /* reset saved cursor */
+	tcursor(CURSOR_SAVE); /* reset saved cursor */
 		for (y = 0; y < term.row; y++)
 			for (x = 0; x < term.col; x++)
 				tclearglyph(&term.line[y][x], 0);
 		tswapscreen();
 	}
-  tfulldirt();
+	tfulldirt();
 }
 
 void
@@ -1180,7 +1180,7 @@ tnew(int col, int row)
 	term.tabs = xmalloc(col * sizeof(*term.tabs));
 	for (i = 0; i < HISTSIZE; i++)
 		term.hist[i] = xmalloc(col * sizeof(Glyph));
-  treset();
+	treset();
 }
 
 /* handle it with care */
@@ -1475,7 +1475,7 @@ tsetchar(Rune u, const Glyph *attr, int x, int y)
 	} else if (term.line[y][x].mode & ATTR_WDUMMY) {
 		term.line[y][x-1].u = ' ';
 		term.line[y][x-1].mode &= ~ATTR_WIDE;
-  }
+	}
 
 	term.dirty[y] = 1;
 	term.line[y][x] = *attr;
@@ -1807,7 +1807,7 @@ tsetmode(int priv, int set, const int *args, int narg)
 				break;
 			case 1048:
 				if (!allowaltscreen)
-          break;
+				break;
 				tcursor((set) ? CURSOR_SAVE : CURSOR_LOAD);
 				break;
 			case 2004: /* 2004: bracketed paste mode */
@@ -1969,18 +1969,18 @@ csihandle(void)
 			break;
 		case 2: /* all */
 			if (IS_SET(MODE_ALTSCREEN)) {
-  			tclearregion(0, 0, term.col-1, term.row-1, 1);
-  			break;
-      }
+				tclearregion(0, 0, term.col-1, term.row-1, 1);
+				break;
+			}
 			/* vte does this:
 			tscrollup(0, term.row-1, term.row, SCROLL_SAVEHIST); */
-      
+
 			/* alacritty does this: */
 			for (n = term.row-1; n >= 0 && tlinelen(term.line[n]) == 0; n--);
 			if (n >= 0)
 				tscrollup(0, term.row-1, n+1, SCROLL_SAVEHIST);
 			tscrollup(0, term.row-1, term.row-n-1, SCROLL_NOSAVEHIST);
-      break;
+			break;
 		default:
 			goto unknown;
 		}
@@ -2200,7 +2200,7 @@ strparse(void)
 		if (c == '\0')
 			return;
 		p++;
-  }
+	}
 }
 
 void
@@ -2342,7 +2342,7 @@ void
 tdumpline(int n)
 {
 	char str[(term.col + 1) * UTF_SIZ];
-  tprinter(str, tgetline(str, &term.line[n][0]));
+	tprinter(str, tgetline(str, &term.line[n][0]));
 }
 
 void
@@ -2843,7 +2843,7 @@ treflow(int col, int row)
 			ox = 0, oy++, nx = 0;
 		} else/* if (col - nx < len - ox) */ {
 			memcpy(&buf[ny][nx], &line[ox], (col-nx) * sizeof(Glyph));
-    	ox += col - nx;
+			ox += col - nx;
 			buf[ny][col - 1].mode |= ATTR_WRAP;
 			nx = 0;
 		}
