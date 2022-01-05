@@ -1375,7 +1375,7 @@ selscroll(int top, int bot, int n)
 }
 
 static char *getcwd_by_pid(pid_t pid) {
-	char buf[32];
+	char buf[128];
 	snprintf(buf, sizeof buf, "/proc/%d/cwd", pid);
 	return realpath(buf, NULL);
 }
