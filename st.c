@@ -2237,7 +2237,7 @@ externalpipe(const Arg *arg)
 	newline = 0;
 	for (n = 0; n < term.row; n++) {
 		bp = term.line[n];
-		lastpos = MIN(tlinelen(n) + 1, term.col) - 1;
+		lastpos = MIN(tlinelen(TLINE(n)) + 1, term.col) - 1;
 		if (lastpos < 0)
 			break;
 		end = &bp[lastpos + 1];
