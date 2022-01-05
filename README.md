@@ -18,6 +18,7 @@ $ sudo make clean install && make clean
 - Mouse scrollback
 - Fallback fonts (set to Joypixels and Nerd Fonts)
 - Ligatures -- I don't personally use ligatured fonts but I guess its nice to have the feature?
+- Text reflow
 - Actual bold fonts instead of just using bright colors
 
 ## Dependencies
