@@ -44,9 +44,6 @@
 #define ISCONTROLC1(c)		(BETWEEN(c, 0x80, 0x9f))
 #define ISCONTROL(c)		(ISCONTROLC0(c) || ISCONTROLC1(c))
 #define ISDELIM(u)		(u && wcschr(worddelimiters, u))
-#define TLINE(y)		((y) < term.scr ? term.hist[((y) + term.histi - \
-				term.scr + HISTSIZE + 1) % HISTSIZE] : \
-				term.line[(y) - term.scr])
 #define STRESCARGREST(n)	((n) == 0 ? strescseq.buf : strescseq.args[(n)-1] + 1)
 #define STRESCARGJUST(n)	(*(strescseq.args[n]) = '\0', STRESCARGREST(n))
 
