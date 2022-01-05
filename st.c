@@ -1253,6 +1253,7 @@ newterm(const Arg* arg)
 	}
 }
 
+void
 kscrollup(const Arg* a)
 {
 	int n = a->i;
