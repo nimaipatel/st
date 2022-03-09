@@ -1,0 +1,10 @@
+#!/bin/sh
+
+if xrdb -query | grep -q '\*\.noligatures:\s0' ; then
+	echo '*.noligatures: 1' | xrdb -merge
+else
+	echo '*.noligatures: 0' | xrdb -merge
+fi
+
+# send USR1 signal to all running st instances
+pidof st | xargs kill -s USR1

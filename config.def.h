@@ -13,7 +13,7 @@ static char *font2[] = {
 };
 
 static int borderpx = 0;
-static int ligatures = 1;
+static int noligatures = 1;
 
 /*
  * What program is execed by st depends of these precedence rules:
