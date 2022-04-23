@@ -330,8 +330,13 @@ zoomreset(const Arg *arg)
 	Arg larg;
 
 	if (defaultfontsize > 0) {
-		larg.f = defaultfontsize;
-		zoomabs(&larg);
+		if (usedfontsize == defaultfontsize) {
+			larg.f = bigfontsize;
+			zoomabs(&larg);
+		} else {
+			larg.f = defaultfontsize;
+			zoomabs(&larg);
+		}
 	}
 }
 

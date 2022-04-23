@@ -5,12 +5,14 @@
  *
  * font: see http://freedesktop.org/software/fontconfig/fontconfig-user.html
  */
-static char *font = "monospace:pixelsize=18:antialias=true:autohint=true";
+static char *font = "monospace:pixelsize=22:antialias=true:autohint=true";
 /* Spare fonts */
 static char *font2[] = {
-	"JoyPixels:pixelsize=14:antialias=true:autohint=true",
-	"Symbols Nerd Font:pixelsize=18:antialias=true:autohint=true",
+	"JoyPixels:pixelsize=18:antialias=true:autohint=true",
+	"Symbols Nerd Font:pixelsize=22:antialias=true:autohint=true",
 };
+
+static int bigfontsize = 28;
 
 static int borderpx = 0;
 static int noligatures = 1;
