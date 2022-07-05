@@ -15,9 +15,6 @@
 #include <X11/Xft/Xft.h>
 #include <X11/XKBlib.h>
 #include <X11/Xresource.h>
-#include <stdbool.h>
-#include <dirent.h>
-#include <ctype.h>
 
 char *argv0;
 #include "arg.h"
@@ -2020,95 +2017,6 @@ kpress(XEvent *ev)
 	ttywrite(buf, len, 1);
 }
 
-/* get pid of parent of process identified by `pid` */
-pid_t get_parent_pid(pid_t pid) {
-	FILE *stat = NULL;
-	char fname[PATH_MAX];
-	snprintf(fname, PATH_MAX, "/proc/%d/stat", pid);
-
-	stat = fopen(fname, "r");
-	if (stat == NULL) {
-		fprintf(stderr, "[ERROR] cannot open %s\n", fname);
-		return -1;
-	}
-
-	pid_t ppid;
-	int ret = fscanf(stat, "%*lld %*s %*s %u", &ppid);
-
-	if (ret != 1)
-		return -1;
-
-	fclose(stat);
-
-	return ppid;
-}
-
-/* get the pid of child of process identified by `pid`. It is obviously
- * possible for a process to have more than one direct children but st ideally
- * should have exactly one direct child */
-pid_t get_child_pid(pid_t pid) {
-	struct dirent *dirent;
-	DIR *dir;
-
-	if (!(dir = opendir("/proc"))) {
-		fprintf(stderr, "st: couldn't open /proc, errno %d\n", errno);
-		perror(NULL);
-		return -1;
-	}
-
-	while ((dirent = readdir(dir))) {
-		if (isdigit(*dirent->d_name)) {
-			pid_t currpid = atoi(dirent->d_name);
-			pid_t parent_of_currpid = get_parent_pid(currpid);
-			if (parent_of_currpid == pid) {
-				closedir(dir);
-				/* we are assuming this is the only child that
-				 * `pid` has */
-				return currpid;
-			}
-		}
-	}
-
-	closedir(dir);
-	return -1;
-}
-
-/* returns false if process identified by `pid` has no children */
-bool has_children(pid_t pid) {
-	struct dirent *dirent;
-	DIR *dir;
-
-	if (!(dir = opendir("/proc"))) {
-		// fprintf(stderr, "%s:	couldn't open /proc, errno %d\n", progname, errno);
-		perror(NULL);
-		exit(EXIT_FAILURE);
-	}
-
-	while ((dirent = readdir(dir))) {
-		if (isdigit(*dirent->d_name)) {
-			pid_t currpid = atoi(dirent->d_name);
-			pid_t parent_of_currpid = get_parent_pid(currpid);
-			if (parent_of_currpid == pid) {
-				closedir(dir);
-				return true;
-			}
-		}
-	}
-
-	closedir(dir);
-	return false;
-}
-
-/* check if it is safe to close st */
-bool safe_to_close_st() {
-	/* first we get pid of the running process (i.e. st)*/
-	pid_t stpid = getpid();
-	/* we get the pid of the process that st spawned at startup */
-	pid_t cpid = get_child_pid(stpid);
-	/* we check if process from previous step has any children */
-	return !has_children(cpid);
-}
-
 void
 cmessage(XEvent *e)
 {
@@ -2124,25 +2032,8 @@ cmessage(XEvent *e)
 			win.mode &= ~MODE_FOCUSED;
 		}
 	} else if (e->xclient.data.l[0] == xw.wmdeletewin) {
-		if (safe_to_close_st()) {
-			ttyhangup();
-			exit(0);
-		} else {
-			char *notifcmd[] = { "/bin/sh", "-c",
-			                     "notify-send -t 1000 -u critical "
-			                     "'❌ There are still some "
-			                     "processes running in the "
-			                     "terminal'", NULL };
-			if (fork() == 0) {
-				if (xw.dpy)
-					close(ConnectionNumber(xw.dpy));
-				setsid();
-				execvp(notifcmd[0], notifcmd);
-				fprintf(stderr, "st: execvp %s", notifcmd[0]);
-				perror(" failed");
-				exit(EXIT_SUCCESS);
-			}
-		}
+		ttyhangup();
+		exit(0);
 	}
 }
 

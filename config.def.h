@@ -5,14 +5,14 @@
  *
  * font: see http://freedesktop.org/software/fontconfig/fontconfig-user.html
  */
-static char *font = "monospace:pixelsize=22:antialias=true:autohint=true";
+static char *font = "monospace:pixelsize=24:antialias=true:autohint=true";
 /* Spare fonts */
 static char *font2[] = {
-	"JoyPixels:pixelsize=18:antialias=true:autohint=true",
-	"Symbols Nerd Font:pixelsize=22:antialias=true:autohint=true",
+	"Noto Color Emoji:pixelsize=24:antialias=true:autohint=true",
+	"Symbols Nerd Font:pixelsize=24:antialias=true:autohint=true",
 };
 
-static int bigfontsize = 28;
+static int bigfontsize = 30;
 
 static int borderpx = 0;
 static int noligatures = 1;
@@ -83,7 +83,7 @@ static unsigned int cursorthickness = 1;
 static int bellvolume = 0;
 
 /* default TERM value */
-char *termname = "st-256color";
+char *termname = "xterm-256color";
 
 /*
  * spaces per tab
@@ -103,7 +103,7 @@ char *termname = "st-256color";
 unsigned int tabspaces = 8;
 
 /* bg opacity */
-float alpha = 1.0, alphaUnfocused = 1.0;
+float alpha = 0.9, alphaUnfocused = 0.9;
 
 /* Terminal colors (16 first used in escape sequence) */
 static const char *colorname[] = {
@@ -166,7 +166,7 @@ static unsigned int rows = 24;
 /*
  * Default colour and shape of the mouse cursor
  */
-static unsigned int mouseshape = XC_xterm;
+static unsigned int mouseshape = XC_left_ptr;
 static unsigned int mousefg = 7;
 static unsigned int mousebg = 0;
 
